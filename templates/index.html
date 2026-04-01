@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Predictor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        h1 { font-size: 1.6rem; margin-bottom: 4px; }
+        .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 28px; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+        .field label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 5px;
+        }
+        .field input, .field select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1.5px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            background: #fafafa;
+        }
+        .field input:focus, .field select:focus {
+            outline: none;
+            border-color: #4a90d9;
+            background: #fff;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            margin-top: 24px;
+            background: #4a90d9;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn:hover { background: #3a7bc8; }
+        .result-box {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .result-box.danger {
+            background: #fef2f2;
+            border: 1.5px solid #fca5a5;
+            color: #991b1b;
+        }
+        .result-box.safe {
+            background: #f0fdf4;
+            border: 1.5px solid #86efac;
+            color: #166534;
+        }
+        .result-box h2 { font-size: 1.15rem; margin-bottom: 6px; }
+        .result-box p { font-size: 0.9rem; }
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.78rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Heart Disease Prediction</h1>
+        <p class="subtitle">
+            Logistic Regression model trained on 918 patient records (11 clinical features)
+        </p>
+
+        <form action="/predict" method="POST">
+            <div class="form-grid">
+                <div class="field">
+                    <label for="age">Age</label>
+                    <input type="number" name="age" id="age" value="50" min="18" max="100" required>
+                </div>
+                <div class="field">
+                    <label for="sex">Sex</label>
+                    <select name="sex" id="sex">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="chest_pain">Chest Pain Type</label>
+                    <select name="chest_pain" id="chest_pain">
+                        <option value="ASY">Asymptomatic</option>
+                        <option value="ATA">Atypical Angina</option>
+                        <option value="NAP">Non-Anginal Pain</option>
+                        <option value="TA">Typical Angina</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="resting_bp">Resting Blood Pressure (mm Hg)</label>
+                    <input type="number" name="resting_bp" id="resting_bp" value="130" min="80" max="220" required>
+                </div>
+                <div class="field">
+                    <label for="cholesterol">Cholesterol (mg/dl)</label>
+                    <input type="number" name="cholesterol" id="cholesterol" value="230" min="100" max="600" required>
+                </div>
+                <div class="field">
+                    <label for="fasting_bs">Fasting Blood Sugar > 120 mg/dl</label>
+                    <select name="fasting_bs" id="fasting_bs">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="resting_ecg">Resting ECG</label>
+                    <select name="resting_ecg" id="resting_ecg">
+                        <option value="Normal">Normal</option>
+                        <option value="ST">ST-T Abnormality</option>
+                        <option value="LVH">Left Ventricular Hypertrophy</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="max_hr">Max Heart Rate</label>
+                    <input type="number" name="max_hr" id="max_hr" value="150" min="60" max="220" required>
+                </div>
+                <div class="field">
+                    <label for="exercise_angina">Exercise Induced Angina</label>
+                    <select name="exercise_angina" id="exercise_angina">
+                        <option value="N">No</option>
+                        <option value="Y">Yes</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="oldpeak">ST Depression (Oldpeak)</label>
+                    <input type="number" name="oldpeak" id="oldpeak" value="0.0" min="-5" max="7" step="0.1" required>
+                </div>
+                <div class="field">
+                    <label for="st_slope">ST Slope</label>
+                    <select name="st_slope" id="st_slope">
+                        <option value="Up">Upsloping</option>
+                        <option value="Flat">Flat</option>
+                        <option value="Down">Downsloping</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn">Predict</button>
+        </form>
+
+        {% if show_result %}
+        <div class="result-box {{ 'danger' if prediction == 1 else 'safe' }}">
+            <h2>{{ result }}</h2>
+            <p>Heart disease probability: <strong>{{ risk_pct }}%</strong> | Confidence: <strong>{{ confidence }}%</strong></p>
+        </div>
+        {% endif %}
+
+
+    </div>
+</body>
+</html>
+```
