@@ -56,6 +56,8 @@ def predict():
     return render_template("index.html", result=result, risk_pct=risk_pct,
                            confidence=confidence, prediction=int(prediction),
                            show_result=True)
-
+@app.route("/findings")
+def findings():
+    return render_template("findings.html")
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
