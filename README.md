@@ -66,10 +66,30 @@ Heart disease is the leading cause of death globally, responsible for approximat
 - Comparable accuracy to more complex models on this dataset
 
 ### Key EDA Findings
-- **ST_Slope** is the strongest predictor (importance: 0.1708) - an upward slope during exercise indicates healthy heart response
-- **MaxHR** (0.1206) and **Oldpeak** (0.1069) are the next most important features
-- Asymptomatic chest pain (ASY) has the highest association with heart disease (counterintuitive but clinically documented)
-- Optimal K value for KNN: K=6 (90.22% accuracy via elbow method)
+
+**Heart Disease Distribution by Key Features**
+![Distribution](static/plots/01_distribution.png)
+
+**Correlation Heatmap**
+![Correlation](static/plots/02_correlation.png)
+
+**Chest Pain Type vs Heart Disease**
+![Chest Pain](static/plots/03_chestpain.png)
+
+Asymptomatic chest pain (ASY) has the highest association with heart disease - counterintuitive but clinically documented.
+
+**Age Distribution**
+![Age](static/plots/04_age.png)
+
+**Feature Importance (Random Forest)**
+![Feature Importance](static/plots/05_importance.png)
+
+ST_Slope is the strongest predictor (0.1708), followed by MaxHR (0.1206) and Oldpeak (0.1069).
+
+**ROC Curves - All Models**
+![ROC Curves](static/plots/06_roc.png)
+
+All four models achieve AUC > 0.92, with SVM reaching the highest at 0.942.
 
 ---
 
